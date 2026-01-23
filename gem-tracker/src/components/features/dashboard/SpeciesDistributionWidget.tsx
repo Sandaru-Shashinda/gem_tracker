@@ -99,7 +99,6 @@ export function SpeciesDistributionWidget({ gems }: SpeciesDistributionWidgetPro
             {/* Segments */}
             {stats.map((item, index) => {
               const dashLength = (item.percentage / 100) * circumference
-              const dashOffset = circumference - (item.startPercentage / 100) * circumference
 
               return (
                 <circle

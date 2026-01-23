@@ -60,7 +60,7 @@ export function GemTable({ gems }: GemTableProps) {
                 </Badge>
               </td>
               <td className='px-6 py-4 whitespace-nowrap text-sm text-slate-500'>
-                {gem.intake?.color} / {gem.intake?.weight}ct
+                {gem.color} / {gem.emeraldWeight}ct
               </td>
               <td className='px-6 py-4 whitespace-nowrap text-sm text-slate-500'>
                 {new Date(gem.updatedAt).toLocaleDateString()}
