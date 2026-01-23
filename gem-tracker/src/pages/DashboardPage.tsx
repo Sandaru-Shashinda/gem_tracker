@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { MainLayout } from "@/components/layout/MainLayout"
 import { StatCard } from "@/components/features/dashboard/StatCard"
 import { ErrorRateWidget } from "@/components/features/dashboard/ErrorRateWidget"
+import { SpeciesDistributionWidget } from "@/components/features/dashboard/SpeciesDistributionWidget"
 import { FileText, Activity, CheckCircle, AlertCircle } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -57,30 +58,35 @@ export function DashboardPage() {
           />
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-          <Card className='p-6'>
-            <h3 className='font-semibold text-lg mb-4'>Recent Activity</h3>
-            <div className='space-y-4'>
-              {gems.slice(0, 5).map((gem) => (
-                <div
-                  key={gem._id}
-                  className='flex items-center justify-between py-2 border-b border-slate-100 last:border-0'
-                >
-                  <div>
-                    <p className='font-medium text-slate-800'>{gem.gemId}</p>
-                    <p className='text-xs text-slate-500'>
-                      {new Date(gem.updatedAt).toLocaleString()}
-                    </p>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+          <div className='lg:col-span-2'>
+            <SpeciesDistributionWidget gems={gems} />
+          </div>
+          <div className='space-y-6'>
+            <Card className='p-6'>
+              <h3 className='font-semibold text-lg mb-4'>Recent Activity</h3>
+              <div className='space-y-4'>
+                {gems.slice(0, 5).map((gem) => (
+                  <div
+                    key={gem._id}
+                    className='flex items-center justify-between py-2 border-b border-slate-100 last:border-0'
+                  >
+                    <div>
+                      <p className='font-medium text-slate-800'>{gem.gemId}</p>
+                      <p className='text-xs text-slate-500'>
+                        {new Date(gem.updatedAt).toLocaleString()}
+                      </p>
+                    </div>
+                    <Badge variant={getStatusVariant(gem.status)}>
+                      {gem.status.replace(/_/g, " ")}
+                    </Badge>
                   </div>
-                  <Badge variant={getStatusVariant(gem.status)}>
-                    {gem.status.replace(/_/g, " ")}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          </Card>
+                ))}
+              </div>
+            </Card>
 
-          {user?.role === "ADMIN" && <ErrorRateWidget gems={gems} />}
+            {user?.role === "ADMIN" && <ErrorRateWidget gems={gems} />}
+          </div>
         </div>
       </div>
     </MainLayout>
