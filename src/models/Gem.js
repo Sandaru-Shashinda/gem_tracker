@@ -8,6 +8,7 @@ const GemSchema = new mongoose.Schema(
       enum: ["INTAKE", "READY_FOR_T1", "READY_FOR_T2", "READY_FOR_APPROVAL", "COMPLETED"],
       default: "INTAKE",
     },
+    currentAssignee: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
     // Basic Info (Mostly from Intake)
     color: String,

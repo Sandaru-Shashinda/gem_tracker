@@ -13,7 +13,7 @@ const authRoutes = express.Router()
 
 authRoutes.post("/login", loginUser)
 authRoutes.post("/register", protect, authorize("ADMIN"), registerUser)
-authRoutes.get("/users", protect, authorize("ADMIN"), getUsers)
+authRoutes.get("/users", protect, authorize("ADMIN", "HELPER", "TESTER"), getUsers)
 authRoutes.post("/users/:id", protect, authorize("ADMIN"), updateUser)
 authRoutes.delete("/users/:id", protect, authorize("ADMIN"), deleteUser)
 authRoutes.get("/profile", protect, getUserProfile)

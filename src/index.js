@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js"
 import gemRoutes from "./routes/gemRoutes.js"
 import referenceRoutes from "./routes/referenceRoutes.js"
 import reportRoutes from "./routes/reportRoutes.js"
+import customerRoutes from "./routes/customerRoutes.js"
 
 dotenv.config()
 connectDB()
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes)
 app.use("/api/gems", gemRoutes)
+app.use("/api/customers", customerRoutes)
 app.use("/api/references", referenceRoutes)
 app.use("/api/reports", reportRoutes)
 

@@ -92,7 +92,11 @@ export const getUserProfile = async (req, res) => {
 // @route   GET /api/auth/users
 // @access  Private/Admin
 export const getUsers = async (req, res) => {
-  const users = await User.find({ isDeleted: { $ne: true } })
+  const filter = { isDeleted: { $ne: true } }
+  if (req.query.role) {
+    filter.role = req.query.role
+  }
+  const users = await User.find(filter)
   res.json(users)
 }
 
