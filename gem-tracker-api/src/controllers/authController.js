@@ -109,7 +109,16 @@ export const updateUser = async (req, res) => {
     user.dob = req.body.dob || user.dob
     user.idNumber = req.body.idNumber || user.idNumber
     user.address = req.body.address || user.address
-    user.email = req.body.email || user.email
+
+    // Check if new email is already taken by another user
+    if (req.body.email && req.body.email !== user.email) {
+      const emailExists = await User.findOne({ email: req.body.email, _id: { $ne: user._id } })
+      if (emailExists) {
+        res.status(400).json({ message: "Email already in use" })
+        return
+      }
+      user.email = req.body.email
+    }
 
     if (req.body.password) {
       user.password = req.body.password
