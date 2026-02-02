@@ -31,7 +31,6 @@ export const registerUser = async (req, res) => {
 
   if (userExists) {
     if (userExists.isDeleted) {
-      // Re-activate deleted user if needed, or just error
       res.status(400).json({ message: "Email already exists (deactivated account)" })
       return
     }
@@ -47,6 +46,7 @@ export const registerUser = async (req, res) => {
     dob,
     idNumber,
     address,
+    phoneNumber,
     email,
   })
 
@@ -58,6 +58,7 @@ export const registerUser = async (req, res) => {
       age: user.age,
       dob: user.dob,
       idNumber: user.idNumber,
+      phoneNumber: user.phoneNumber,
       address: user.address,
       email: user.email,
     })
@@ -93,9 +94,8 @@ export const getUserProfile = async (req, res) => {
 // @access  Private/Admin
 export const getUsers = async (req, res) => {
   const filter = { isDeleted: { $ne: true } }
-  if (req.query.role) {
-    filter.role = req.query.role
-  }
+  if (req.query.role) filter.role = req.query.role
+
   const users = await User.find(filter)
   res.json(users)
 }
@@ -113,6 +113,7 @@ export const updateUser = async (req, res) => {
     user.dob = req.body.dob || user.dob
     user.idNumber = req.body.idNumber || user.idNumber
     user.address = req.body.address || user.address
+    user.phoneNumber = req.body.phoneNumber || user.phoneNumber
 
     // Check if new email is already taken by another user
     if (req.body.email && req.body.email !== user.email) {
@@ -124,9 +125,7 @@ export const updateUser = async (req, res) => {
       user.email = req.body.email
     }
 
-    if (req.body.password) {
-      user.password = req.body.password
-    }
+    if (req.body.password) user.password = req.body.password
 
     const updatedUser = await user.save()
 

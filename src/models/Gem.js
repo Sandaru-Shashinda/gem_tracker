@@ -1,18 +1,19 @@
 import mongoose from "mongoose"
+import { GEM_STATUSES } from "../const/const.js"
 
 const GemSchema = new mongoose.Schema(
   {
     gemId: { type: String, unique: true, required: true }, // GRC Number
     status: {
       type: String,
-      enum: ["INTAKE", "READY_FOR_T1", "READY_FOR_T2", "READY_FOR_APPROVAL", "COMPLETED"],
-      default: "INTAKE",
+      enum: GEM_STATUSES,
+      default: GEM_STATUSES.DRAFT_INTAKE,
     },
     currentAssignee: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     assignedTester1: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     assignedTester2: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
-    // Basic Info (Mostly from Intake)
+    // Basic Info (from Intake)
     color: String,
     emeraldWeight: Number, // Weight of the main stone (ct)
     diamondWeight: Number, // Total weight of side stones (ct)
