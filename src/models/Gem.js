@@ -9,6 +9,8 @@ const GemSchema = new mongoose.Schema(
       default: "INTAKE",
     },
     currentAssignee: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    assignedTester1: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    assignedTester2: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
     // Basic Info (Mostly from Intake)
     color: String,
@@ -19,6 +21,8 @@ const GemSchema = new mongoose.Schema(
     cut: String,
     itemDescription: String, // Full textual description
     imageUrl: String,
+    googleDriveFileId: String,
+    customerId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
 
     // Intake specific
     intake: {
@@ -61,6 +65,9 @@ const GemSchema = new mongoose.Schema(
       notes: String,
       testerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       timestamp: Date,
+      correctionRequested: { type: Boolean, default: false },
+      correctionNote: String,
+      history: [Object],
     },
 
     test2: {
@@ -83,6 +90,9 @@ const GemSchema = new mongoose.Schema(
       notes: String,
       testerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       timestamp: Date,
+      correctionRequested: { type: Boolean, default: false },
+      correctionNote: String,
+      history: [Object],
     },
 
     finalApproval: {

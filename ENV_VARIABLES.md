@@ -33,6 +33,14 @@ This document explains the environment variables required for the Gem Tracker AP
   - Production: Your Vercel deployment URL or custom domain
   - Example: `https://your-app.vercel.app`
 
+### Google Drive Configuration
+
+- **GOOGLE_DRIVE_CLIENT_ID**: OAuth2 Client ID from Google Cloud Console
+- **GOOGLE_DRIVE_CLIENT_SECRET**: OAuth2 Client Secret from Google Cloud Console
+- **GOOGLE_DRIVE_REDIRECT_URI**: Redirect URI (e.g., https://developers.google.com/oauthplayground)
+- **GOOGLE_DRIVE_REFRESH_TOKEN**: OAuth2 Refresh Token
+- **GOOGLE_DRIVE_FOLDER_ID**: (Optional) Specific folder ID where images should be uploaded
+
 ## Setup Instructions
 
 ### Local Development

@@ -130,39 +130,59 @@ export const createPDFReport = async (gem) => {
       const footerY = doc.page.height - 140
 
       // Add Gem Image if exists
-      if (gem.imageUrl) {
-        try {
-          const imagePath = path.join(__dirname, "../../", gem.imageUrl)
-          if (fs.existsSync(imagePath)) {
-            // Draw a border for the image
-            doc.rect(350, 160, 200, 200).strokeColor("#e2e8f0").stroke()
-            doc.image(imagePath, 355, 165, {
-              fit: [190, 190],
-              align: "center",
-              valign: "center",
-            })
-            doc
-              .fillColor("#94a3b8")
-              .fontSize(8)
-              .text("Photograph", 350, 365, { width: 200, align: "center" })
+      const addImage = async () => {
+        if (gem.imageUrl) {
+          try {
+            let imageSource
+            if (gem.imageUrl.startsWith("http")) {
+              const response = await fetch(gem.imageUrl)
+              const arrayBuffer = await response.arrayBuffer()
+              imageSource = Buffer.from(arrayBuffer)
+            } else {
+              const imagePath = path.join(__dirname, "../../", gem.imageUrl)
+              if (fs.existsSync(imagePath)) {
+                imageSource = imagePath
+              }
+            }
+
+            if (imageSource) {
+              // Draw a border for the image
+              doc.rect(350, 160, 200, 200).strokeColor("#e2e8f0").stroke()
+              doc.image(imageSource, 355, 165, {
+                fit: [190, 190],
+                align: "center",
+                valign: "center",
+              })
+              doc
+                .fillColor("#94a3b8")
+                .fontSize(8)
+                .text("Photograph", 350, 365, { width: 200, align: "center" })
+            }
+          } catch (err) {
+            console.error("Error adding image to PDF:", err)
           }
-        } catch (err) {
-          console.error("Error adding image to PDF:", err)
         }
       }
 
-      if (gem.qrCode) {
-        doc.image(gem.qrCode, doc.page.width / 2 - 50, footerY, { width: 100 })
+      // Execute PDF generation steps
+      const generate = async () => {
+        await addImage()
+
+        if (gem.qrCode) {
+          doc.image(gem.qrCode, doc.page.width / 2 - 50, footerY, { width: 100 })
+        }
+
+        doc
+          .fillColor("#94a3b8")
+          .fontSize(9)
+          .text("For complete terms and updates, visit www.grc.lk", 0, doc.page.height - 40, {
+            align: "center",
+          })
+
+        doc.end()
       }
 
-      doc
-        .fillColor("#94a3b8")
-        .fontSize(9)
-        .text("For complete terms and updates, visit www.grc.lk", 0, doc.page.height - 40, {
-          align: "center",
-        })
-
-      doc.end()
+      generate().catch(reject)
 
       stream.on("finish", () => {
         resolve(`/reports/${filename}`)
