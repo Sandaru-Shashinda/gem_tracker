@@ -99,6 +99,8 @@ export const createPDFReport = async (gem) => {
       drawField("Clarity:", gem.finalApproval.finalObservations.clarityGrade, 50, currentY)
       currentY += 18
       drawField("Comments:", gem.finalApproval.finalObservations.comments, 50, currentY)
+      currentY += 18
+      drawField("Special Note:", gem.finalApproval.finalObservations.specialNote, 50, currentY)
       currentY += 30
 
       // Item Description Section
